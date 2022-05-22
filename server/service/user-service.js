@@ -18,6 +18,8 @@ class UserService {
         const activationLink = uuidv4();
         const user = await UserModel.create({email, password: hashPassword, activationLink})
 
+        console.log(`sending mail... ${user}${activationLink}`)
+
         //await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`)
         const userDto = new UserDto(user);
         const tokens = tokenService.generateToken({...userDto});
@@ -31,8 +33,8 @@ class UserService {
 
     async activate(activationLink) {
         const user = await UserModel.findOne({activationLink})
-        if (!user){
-            throw ApiError.BadRequest('Wrong activation link');
+        if (!user) {
+            throw ApiError.BadRequest('Wrong activation link')
         }
         user.isActivated = true;
         await user.save();
@@ -40,12 +42,12 @@ class UserService {
 
     async login(email, password) {
         const user = await UserModel.findOne({email})
-        if (!user){
+        if (!user) {
             throw ApiError.BadRequest('The user with this username has not been found');
         }
 
         const arePasswordsEqual = await bcrypt.compare(password, user.password);
-        if(!arePasswordsEqual){
+        if (!arePasswordsEqual) {
             throw ApiError.BadRequest('Wrong password');
         }
 
@@ -59,7 +61,7 @@ class UserService {
         }
     }
 
-    async logout(refreshToken){
+    async logout(refreshToken) {
         const token = await tokenService.removeToken(refreshToken);
         return token;
     }
@@ -83,9 +85,10 @@ class UserService {
         return {...tokens, user: userDto}
     }
 
-    async getAllUsers(){
-      const users = await UserModel.find();
-      return users;
+    async getAllUsers() {
+        const users = await UserModel.find();
+        console.log('users:', users);
+        return users;
     }
 }
 
