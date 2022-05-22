@@ -44,18 +44,19 @@ class UserController {
 
     async activate(req, res, next) {
         try {
+            console.log(req.params)
             const activationLink = req.params.link;
             await userService.activate(activationLink);
 
-            return res.redirect(process.env.CLIENT_URL);
-        } catch (err) {
-            next(err)
+           return res.redirect(process.env.CLIENT_URL);
+        } catch (e) {
+            next(e);
         }
     }
 
     async getUsers(req, res, next) {
         try {
-            const users = userService.getAllUsers();
+            const users = await userService.getAllUsers();
             return res.json(users);
         } catch (err) {
             next(err)
