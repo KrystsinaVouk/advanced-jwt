@@ -8,25 +8,27 @@ const LoginForm: FC = () => {
     const [password, setPassword] = useState('');
 
     return (
-        <div>
+        <div className={"login-form"}>
             <input
+                className={"bg-1"}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={`Email`}
                 value={email}
                 type={`text`}
             />
             <input
+                className={"bg-1"}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={`Password`}
                 value={password}
                 type={`password`}
             />
-            <button
-                onClick={() => store.login(email, password)}
+            <button className={"bg-1"}
+                    onClick={() => store.login(email, password)}
             >Login
             </button>
-            <button
-                onClick={() => store.registration(email, password)}
+            <button className={"bg-1"}
+                    onClick={() => store.registration(email, password)}
             >Register
             </button>
         </div>
